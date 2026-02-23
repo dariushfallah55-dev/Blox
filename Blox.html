@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blox.ir | دنیای مودهای ماینکرافت</title>
+  <meta name="description" content="Blox.ir - کشف مود، پلاگین، ریسورس‌پک و مپ‌های ماینکرافت با طراحی ایرانی و مدرن" />
+  <style>
+    :root {
+      --bg: #071326;
+      --bg-soft: #0d1e37;
+      --surface: rgba(14, 28, 52, 0.76);
+      --surface-2: rgba(20, 38, 70, 0.9);
+      --text: #f6f9ff;
+      --muted: #a5b8db;
+      --primary: #25c4a3;
+      --secondary: #f3ad46;
+      --danger: #ff6a6a;
+      --line: rgba(255, 255, 255, 0.12);
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.38);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Vazirmatn", Tahoma, sans-serif;
+      background: radial-gradient(1200px 600px at 85% -15%, #1760b0 0%, transparent 55%),
+                  radial-gradient(900px 500px at 0% 100%, #1a7f66 0%, transparent 55%),
+                  linear-gradient(135deg, var(--bg), #07192e 40%, #0b1424 100%);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: auto;
+      width: 42vw;
+      height: 42vw;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.24;
+      z-index: -1;
+      animation: floatBlob 14s ease-in-out infinite;
+    }
+
+    body::before {
+      top: -12vw;
+      left: -8vw;
+      background: #0fa1ff;
+    }
+
+    body::after {
+      bottom: -14vw;
+      right: -8vw;
+      background: #00c48c;
+      animation-delay: -6s;
+    }
+
+    .container {
+      width: min(1200px, 92vw);
+      margin: 0 auto;
+      padding: 24px 0 56px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      border: 1px solid var(--line);
+      background: rgba(7, 18, 35, 0.72);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      position: sticky;
+      top: 12px;
+      z-index: 20;
+      box-shadow: var(--shadow);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.06rem;
+      letter-spacing: 0.2px;
+    }
+
+    .logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(160deg, #35f4c5, #138f72);
+      color: #032016;
+      font-weight: 900;
+    }
+
+    .brand small {
+      color: var(--muted);
+      font-weight: 500;
+      display: block;
+      font-size: 0.76rem;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #0c9f82);
+      color: #03261d;
+      font-weight: 800;
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .hero {
+      margin-top: 22px;
+      padding: 34px 26px;
+      border-radius: calc(var(--radius) + 4px);
+      background: linear-gradient(115deg, rgba(25, 197, 164, 0.17), rgba(51, 94, 219, 0.14));
+      border: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -60% -20% auto auto;
+      width: 340px;
+      height: 340px;
+      background: radial-gradient(circle, rgba(250, 190, 73, 0.35), transparent 60%);
+      animation: spin 18s linear infinite;
+      z-index: -1;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+      line-height: 1.35;
+    }
+
+    .hero p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      max-width: 700px;
+      line-height: 1.9;
+    }
+
+    .controls {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    .field {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--text);
+      padding: 12px 14px;
+      font-family: inherit;
+      outline: none;
+      width: 100%;
+    }
+
+    .field::placeholder {
+      color: #9fb0cd;
+    }
+
+    .tabs {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tab {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+      padding: 9px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+    }
+
+    .tab.active {
+      background: linear-gradient(130deg, #1ac7a5, #117f6a);
+      border-color: transparent;
+      color: #03251e;
+      font-weight: 800;
+    }
+
+    .list-header {
+      margin-top: 26px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .list-header h2 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .grid {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: var(--shadow);
+      animation: cardIn 0.35s ease both;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: #0f1b2f;
+    }
+
+    .name {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .author {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .desc {
+      margin: 0;
+      color: #dce7ff;
+      font-size: 0.88rem;
+      line-height: 1.8;
+      min-height: 48px;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: auto;
+      font-size: 0.8rem;
+      color: #b9c9e8;
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .card a {
+      color: #9ce8d7;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .bottom {
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .muted {
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.46);
+      backdrop-filter: blur(6px);
+      display: none;
+      place-items: center;
+      padding: 16px;
+      z-index: 50;
+    }
+
+    .modal.open {
+      display: grid;
+    }
+
+    .modal-card {
+      width: min(420px, 95vw);
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #112849, #0a1d34);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      animation: popup 0.2s ease;
+    }
+
+    .modal-card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    .modal-card p {
+      margin-top: 0;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .login-form {
+      display: grid;
+      gap: 10px;
+    }
+
+    .tiny {
+      font-size: 0.8rem;
+      color: #95a9ce;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      background: #0e2a48;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 14px;
+      color: #d8e7ff;
+      display: none;
+      z-index: 60;
+    }
+
+    .toast.show {
+      display: block;
+    }
+
+    @media (max-width: 860px) {
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 26px 18px;
+      }
+
+      .nav {
+        align-items: stretch;
+        flex-direction: column;
+      }
+    }
+
+    @keyframes floatBlob {
+      0%, 100% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(30px) translateX(20px); }
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes popup {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <nav class="nav">
+      <div class="brand">
+        <div class="logo">B</div>
+        <div>
+          Blox.ir
+          <small>مرجع ایرانی مودهای ماینکرافت</small>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-ghost" id="refreshBtn">بارگذاری دوباره</button>
+        <button class="btn btn-primary" id="loginBtn">ورود / عضویت</button>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <h1>کشف مود، پلاگین، ریسورس‌پک و مپ در <span style="color:#8bf6de;">Blox.ir</span></h1>
+      <p>
+        این صفحه با API رسمی Modrinth کار می‌کند و پروژه‌های واقعی را نمایش می‌دهد. ظاهر کاملا اختصاصی است تا حس یک پلتفرم ایرانی تمیز و مدرن را داشته باشد.
+      </p>
+
+      <div class="controls">
+        <input class="field" id="queryInput" placeholder="جستجو: مثال OptiFine, performance, fabric..." />
+        <select class="field" id="sortSelect">
+          <option value="downloads">محبوب‌ترین (دانلود)</option>
+          <option value="relevance">مرتبط‌ترین</option>
+          <option value="follows">بیشترین دنبال‌کننده</option>
+          <option value="newest">جدیدترین</option>
+          <option value="updated">آخرین بروزرسانی</option>
+        </select>
+        <select class="field" id="limitSelect">
+          <option value="24">24 مورد</option>
+          <option value="48" selected>48 مورد</option>
+          <option value="72">72 مورد</option>
+        </select>
+      </div>
+
+      <div class="tabs" id="typeTabs"></div>
+    </section>
+
+    <section class="list-header">
+      <h2 id="listTitle">لیست پروژه‌ها</h2>
+      <div class="status" id="statusText">در حال آماده‌سازی...</div>
+    </section>
+
+    <section class="grid" id="resultsGrid"></section>
+    <p class="muted" id="emptyState" hidden>نتیجه‌ای پیدا نشد. نوع پروژه یا عبارت جستجو را تغییر بده.</p>
+
+    <div class="bottom">
+      <button class="btn btn-ghost" id="loadMoreBtn">نمایش بیشتر</button>
+    </div>
+  </main>
+
+  <aside class="modal" id="loginModal" aria-hidden="true">
+    <div class="modal-card">
+      <h3>ورود به Blox.ir</h3>
+      <p>فعلا لاگین به‌صورت نمایشی است. برای اتصال واقعی باید بک‌اند و دیتابیس اضافه شود.</p>
+      <form class="login-form" id="loginForm">
+        <input class="field" type="text" placeholder="نام کاربری یا ایمیل" required />
+        <input class="field" type="password" placeholder="رمز عبور" required />
+        <button class="btn btn-primary" type="submit">ورود</button>
+        <button class="btn btn-ghost" type="button" id="closeModalBtn">بستن</button>
+        <span class="tiny">با ورود، قوانین Blox.ir را می‌پذیری.</span>
+      </form>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast">ورود نمایشی انجام شد.</div>
+
+  <script>
+    const API_BASE = "https://api.modrinth.com/v2/search";
+    const typeLabels = {
+      mod: "مود",
+      plugin: "پلاگین",
+      resourcepack: "ریسورس‌پک",
+      modpack: "مودپک",
+      datapack: "مپ/دیتاپک"
+    };
+
+    const state = {
+      query: "",
+      type: "mod",
+      index: "downloads",
+      limit: 48,
+      offset: 0,
+      total: 0,
+      loading: false
+    };
+
+    const tabsRoot = document.getElementById("typeTabs");
+    const queryInput = document.getElementById("queryInput");
+    const sortSelect = document.getElementById("sortSelect");
+    const limitSelect = document.getElementById("limitSelect");
+    const grid = document.getElementById("resultsGrid");
+    const statusText = document.getElementById("statusText");
+    const listTitle = document.getElementById("listTitle");
+    const loadMoreBtn = document.getElementById("loadMoreBtn");
+    const emptyState = document.getElementById("emptyState");
+    const refreshBtn = document.getElementById("refreshBtn");
+    const loginBtn = document.getElementById("loginBtn");
+    const loginModal = document.getElementById("loginModal");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const loginForm = document.getElementById("loginForm");
+    const toast = document.getElementById("toast");
+
+    function makeTabs() {
+      tabsRoot.innerHTML = "";
+      Object.entries(typeLabels).forEach(([type, label]) => {
+        const btn = document.createElement("button");
+        btn.className = `tab${state.type === type ? " active" : ""}`;
+        btn.textContent = label;
+        btn.addEventListener("click", () => {
+          if (state.type === type) return;
+          state.type = type;
+          state.offset = 0;
+          makeTabs();
+          fetchProjects(false);
+        });
+        tabsRoot.appendChild(btn);
+      });
+    }
+
+    function numberFormat(value) {
+      return new Intl.NumberFormat("fa-IR").format(value || 0);
+    }
+
+    function shortText(text, max = 112) {
+      if (!text) return "بدون توضیحات";
+      return text.length > max ? `${text.slice(0, max - 1)}…` : text;
+    }
+
+    function setStatus(text, isError = false) {
+      statusText.textContent = text;
+      statusText.style.color = isError ? "var(--danger)" : "var(--muted)";
+    }
+
+    function cardTemplate(project) {
+      const icon = project.icon_url || "https://cdn.modrinth.com/data/cached_images/d6f0a2c3f46ca30f512f3f9cfec7a2f5f3f5302f.png";
+      const title = project.title || "بدون عنوان";
+      const author = project.author || "نامشخص";
+      const desc = shortText(project.description);
+      const downloads = numberFormat(project.downloads);
+      const followers = numberFormat(project.follows);
+      const category = typeLabels[state.type] || "پروژه";
+      const link = `https://modrinth.com/${project.project_type}/${project.slug}`;
+
+      return `
+        <article class="card">
+          <div class="card-top">
+            <img class="icon" src="${icon}" alt="${title}" loading="lazy" />
+            <div>
+              <h3 class="name">${title}</h3>
+              <p class="author">توسعه‌دهنده: ${author}</p>
+            </div>
+          </div>
+          <p class="desc">${desc}</p>
+          <div class="meta">
+            <span class="badge">${category}</span>
+            <span>دانلود: ${downloads}</span>
+            <span>دنبال‌کننده: ${followers}</span>
+          </div>
+          <a href="${link}" target="_blank" rel="noopener noreferrer">مشاهده در Modrinth</a>
+        </article>
+      `;
+    }
+
+    async function fetchProjects(append = false) {
+      if (state.loading) return;
+      state.loading = true;
+      loadMoreBtn.disabled = true;
+      setStatus("در حال دریافت اطلاعات...");
+
+      if (!append) {
+        grid.innerHTML = "";
+        emptyState.hidden = true;
+      }
+
+      try {
+        const facets = JSON.stringify([[`project_type:${state.type}`]]);
+        const params = new URLSearchParams({
+          query: state.query,
+          index: state.index,
+          limit: String(state.limit),
+          offset: String(state.offset),
+          facets
+        });
+
+        const res = await fetch(`${API_BASE}?${params.toString()}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        state.total = data.total_hits || 0;
+        const hits = Array.isArray(data.hits) ? data.hits : [];
+        listTitle.textContent = `${typeLabels[state.type]} | ${numberFormat(state.total)} نتیجه`;
+
+        if (!hits.length && !append) {
+          emptyState.hidden = false;
+        }
+
+        grid.insertAdjacentHTML("beforeend", hits.map(cardTemplate).join(""));
+        setStatus(`نمایش ${numberFormat(grid.childElementCount)} از ${numberFormat(state.total)} نتیجه`);
+
+        if (grid.childElementCount >= state.total || !hits.length) {
+          loadMoreBtn.style.display = "none";
+        } else {
+          loadMoreBtn.style.display = "inline-block";
+          loadMoreBtn.disabled = false;
+        }
+      } catch (err) {
+        console.error(err);
+        setStatus("خطا در دریافت داده از Modrinth. اتصال اینترنت یا محدودیت CORS را بررسی کن.", true);
+      } finally {
+        state.loading = false;
+      }
+    }
+
+    function debounce(fn, delay = 480) {
+      let timer;
+      return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), delay);
+      };
+    }
+
+    queryInput.addEventListener("input", debounce((event) => {
+      state.query = event.target.value.trim();
+      state.offset = 0;
+      fetchProjects(false);
+    }));
+
+    sortSelect.addEventListener("change", (event) => {
+      state.index = event.target.value;
+      state.offset = 0;
+      fetchProjects(false);
+    });
+
+    limitSelect.addEventListener("change", (event) => {
+      state.limit = Number(event.target.value) || 48;
+      state.offset = 0;
+      fetchProjects(false);
+    });
+
+    loadMoreBtn.addEventListener("click", () => {
+      state.offset += state.limit;
+      fetchProjects(true);
+    });
+
+    refreshBtn.addEventListener("click", () => {
+      state.offset = 0;
+      fetchProjects(false);
+    });
+
+    loginBtn.addEventListener("click", () => loginModal.classList.add("open"));
+    closeModalBtn.addEventListener("click", () => loginModal.classList.remove("open"));
+
+    loginModal.addEventListener("click", (event) => {
+      if (event.target === loginModal) {
+        loginModal.classList.remove("open");
+      }
+    });
+
+    loginForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      loginModal.classList.remove("open");
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2200);
+    });
+
+    makeTabs();
+    fetchProjects(false);
+  </script>
+</body>
+</html>
